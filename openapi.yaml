@@ -56,6 +56,21 @@ components:
       schema:
         type: string
         description: "AI model filter (chatgpt, claude, perplexity)"
+    entities:
+      name: entities
+      in: query
+      schema:
+        type: string
+        enum: [company, sub_brands, products, ingredients]
+        default: company
+        description: "Entity level the rows and your own KPIs are evaluated on (projects with the entity tree switched on). company = sub-brands, products and ingredients count for their company (default); products = product brands, ingredients count for their product; ingredients = active substances; sub_brands = brand lines and subsidiaries. Counting never changes between levels — only the grouping."
+    ownEntity:
+      name: ownEntity
+      in: query
+      schema:
+        type: string
+        description: "Which of your own entities counts as \"you\" on that level (competitor id from the entity tree, e.g. a sister product). Default: the own entity with the most answers."
+
     language:
       name: language
       in: query
@@ -353,6 +368,8 @@ paths:
       description: Returns current vs previous period metrics — Visibility (answers where the brand is named in the text OR its own domain is cited as a source), Mention Rate (answers naming the brand), Citation Rate (answers citing the own domain), mentions, citations, position, and sentiment. Accepts either a relative timeframe or an absolute startDate/endDate range; the comparison period is always the same number of days immediately before the current period.
       tags: [Metrics]
       parameters:
+        - $ref: '#/components/parameters/entities'
+        - $ref: '#/components/parameters/ownEntity'
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/timeframe"
         - $ref: "#/components/parameters/startDate"
@@ -396,6 +413,8 @@ paths:
       description: Returns daily data points for visibility (named OR cited), mentions, citations, ordinal position, mention depth, and sentiment.
       tags: [Metrics]
       parameters:
+        - $ref: '#/components/parameters/entities'
+        - $ref: '#/components/parameters/ownEntity'
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/timeframe"
         - $ref: "#/components/parameters/model"
@@ -426,6 +445,8 @@ paths:
       description: Ranked competitors with Visibility (named OR cited), Mention Rate, Citation Rate, mentions, Share of Voice, ordinal position, mention depth, and sentiment.
       tags: [Competitors]
       parameters:
+        - $ref: '#/components/parameters/entities'
+        - $ref: '#/components/parameters/ownEntity'
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/timeframe"
         - $ref: "#/components/parameters/startDate"

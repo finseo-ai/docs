@@ -1,0 +1,36 @@
+---
+title: "Entity levels"
+description: "Evaluate every KPI per company, brand line, product or ingredient — same counting, different grouping."
+---
+
+Finseo resolves every brand an AI answer names into an entity tree: **company › sub-brand › product › ingredient**. Alecensa is a product of Roche, alectinib its active ingredient; Genentech is a Roche subsidiary. Once a project's tree is switched on, every endpoint that ranks brands or reports your own KPIs can be evaluated on a level of that tree.
+
+## Levels
+
+| `entities` | Rows | "You" |
+|---|---|---|
+| `company` (default) | companies; sub-brands, products and ingredients count for their company | your company |
+| `sub_brands` | brand lines and subsidiaries as rows of their own, each with its products | your brand line |
+| `products` | product brands; ingredients count for their product | your product with the most answers, or `ownEntity` |
+| `ingredients` | active substances and materials | your main ingredient, or `ownEntity` |
+
+**Counting never changes between levels.** An answer that names Roche, Alecensa and alectinib counts once for Roche on `company` and once for Alecensa on `products`. Visibility, mention rate, citation rate and share of voice keep their definitions; only the grouping key changes. Citations follow the same rule: a page is attributed to the most specific entity its host, path or title names, and counts for every level above it.
+
+## Choosing "you"
+
+On `products` and `ingredients` several of your own entities may exist (Lorviqua, Lorbrena, Xalkori). By default the one with the most answers is "you". Pass `ownEntity=<competitor id>` to evaluate another one — the ids come from the entity tree (MCP: `get_entity_tree` → `ownOptions`).
+
+## Endpoints
+
+`entities` and `ownEntity` are accepted by:
+
+- [`GET /v1/projects/{projectId}/competitors`](/api-reference/competitors/ranking)
+- [`GET /v1/projects/{projectId}/metrics`](/api-reference/metrics/daily)
+- [`GET /v1/projects/{projectId}/metrics/timeseries`](/api-reference/metrics/timeseries)
+
+```bash
+curl "https://api.finseo.ai/v1/projects/$PROJECT/competitors?timeframe=30d&entities=products" \
+  -H "Authorization: Bearer sk_live_..."
+```
+
+Projects whose tree is not switched on ignore both parameters and return the company grouping.

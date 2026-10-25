@@ -202,7 +202,8 @@
               {
                 "group": "Guides",
                 "pages": [
-                  "api-reference/guides/automate-pitch"
+                  "api-reference/guides/automate-pitch",
+                  "api-reference/guides/entity-levels"
                 ]
               },
               {

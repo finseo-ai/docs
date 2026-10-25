@@ -34,6 +34,14 @@ Per-day fields (all counts are AI answers of that day; see [KPIs explained](/get
   ISO date `YYYY-MM-DD` (use with `startDate`).
 </ParamField>
 
+<ParamField query="entities" type="string" default="company">
+  Entity level (projects with the entity tree switched on): `company` (default — sub-brands, products and ingredients count for their company), `sub_brands`, `products` (ingredients count for their product), `ingredients`. Counting never changes between levels, only the grouping; see [Entity levels](/api-reference/guides/entity-levels).
+</ParamField>
+
+<ParamField query="ownEntity" type="string">
+  Which of your own entities counts as "you" on that level (competitor `id` from the entity tree, e.g. a sister product). Default: the own entity with the most answers.
+</ParamField>
+
 <ParamField query="model" type="string">
   Filter to one model.
 </ParamField>

@@ -50,12 +50,15 @@ All tools are **read-only** — they retrieve data and never modify it.
 | `get_competitor_h2h` | Head-to-head vs one competitor: who is named first, average mention order, and LLM-judged comparative claims |
 | `get_sentiment_overview` | Sentiment & Share of Voice: uncapped SoV with explicit denominators, per-brand sentiment leaderboard with win rates and aspect scores, and the most negative LLM-judged statements |
 | `get_top_sources` | Most cited sources with citation counts and source types |
+| `get_entity_tree` | The project's entity tree (companies › sub-brands › products › ingredients), the levels available and `ownOptions` — which of your own entities can be "you" per level. Call it before using `entityLevel` |
 | `get_tags` | List tags with prompt counts |
 | `get_query_fanouts` | AI query fan-outs (sub-queries) ranked by frequency |
 | `list_tasks` | AI-generated optimization tasks (the dashboard Tasks page) sorted by priority score, with status/category/impact filters — returns the task `id` used by `get_task_details` |
 | `get_task_details` | One task in full: description, step-by-step plan, the evidence that triggered it, and the structured content plan for content tasks |
 
 The analytics tools accept optional `model` (e.g. `chatgpt`, `perplexity`, `ai_overview`, `copilot`, `gemini`, `grok`) and `tags` filters — the same filters as the dashboard.
+
+`get_visibility_metrics`, `get_visibility_timeseries`, `get_competitor_ranking` and `get_sentiment_overview` also accept `entityLevel` and `ownEntity` (see [Entity levels](#entity-levels)).
 
 ### Visibility, Mention Rate and Citation Rate
 
@@ -84,6 +87,19 @@ Every analytics tool defaults to a relative window (`timeframeDays`, default 30,
 - `list_prompts` only supports relative windows.
 
 Example: *"Compare my visibility for July 1–31 against the previous month"* → the assistant calls `get_visibility_metrics` with `startDate: "2026-07-01"`, `endDate: "2026-07-31"`.
+
+### Entity levels
+
+Projects with the entity tree switched on group every mention by entity: companies, sub-brands (brand lines, subsidiaries), products and ingredients. `entityLevel` picks the level a tool evaluates on:
+
+- `company` (default) — every row is a company; sub-brands, products and ingredients count for their company. "You" is your company.
+- `sub_brands` — brand lines and subsidiaries as rows of their own, with their products.
+- `products` — product brands; ingredients count for their product. "You" is your main product (the one with the most answers), or the one you pass as `ownEntity`.
+- `ingredients` — active substances and materials.
+
+Counting never changes between levels: an answer naming a company and two of its products counts once for the company on `company` and once per product on `products`. Call `get_entity_tree` first — it returns the levels the project has and `ownOptions` (the ids you can pass as `ownEntity`). Projects without a live tree ignore both arguments and report the company grouping.
+
+Example: *"How visible is Lorbrena compared to Alecensa?"* → `get_entity_tree`, then `get_competitor_ranking` with `entityLevel: "products"`, `ownEntity: <Lorbrena id>`.
 
 ### Drill-down workflow
 
