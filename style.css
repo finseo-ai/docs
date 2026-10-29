@@ -1,14 +1,20 @@
-/* Finseo CI — matches finseo.ai (cream light mode, warm anthracite dark mode) */
+/* Finseo CI — matches finseo.ai (stone light mode, warm night dark mode, ink + ember accents) */
 
 @import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap");
 
 :root {
-  --finseo-green: #0eca7b;
-  --finseo-cream: #FAF9F5;
-  --finseo-cream-dark: #F1EEE9;
-  --finseo-anthracite: #1C1C1C;
-  --finseo-anthracite-card: #171717;
-  --finseo-anthracite-border: #232323;
+  --finseo-ink: #1C1C1C;
+  --finseo-ember: #E8590C;
+  --finseo-stone: #F3F2F0;
+  --finseo-edge: #E7E3DB;
+  --finseo-night: #171615;
+  --finseo-night-line: #1F1E1C;
+}
+
+/* Season Serif is licensed as Regular only: never let the browser fake bold or italic cuts */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400 !important;
+  font-synthesis: none;
 }
 
 /* Code in Geist Mono to match the site (falls back to Mintlify default if blocked) */
@@ -16,9 +22,9 @@ code, kbd, pre, samp {
   font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* Brand-green text selection */
+/* Ember text selection, like the website */
 ::selection {
-  background: rgba(14, 202, 123, 0.25);
+  background: rgba(232, 89, 12, 0.2);
 }
 
 /* Make navbar logo smaller */
@@ -36,4 +42,25 @@ img.logo {
 [class*="Logo"] img {
   max-height: 18px !important;
   width: auto !important;
+}
+
+/* Square, edgy corners everywhere, like finseo.ai */
+button,
+input,
+select,
+textarea,
+[class*="rounded"] {
+  border-radius: 0 !important;
+}
+
+/* The F mark alone sits a little taller than the old wordmark */
+nav img[src*="/logo/"],
+header img[src*="/logo/"],
+a[href="/"] img[src*="/logo/"] {
+  max-height: 24px !important;
+}
+
+/* Ember stays a small accent: link underlines on hover */
+#content-area a:hover {
+  text-decoration-color: var(--finseo-ember) !important;
 }

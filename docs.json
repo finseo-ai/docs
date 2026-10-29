@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Finseo",
   "colors": {
-    "primary": "#0eca7b",
-    "light": "#0eca7b",
-    "dark": "#0a9956"
+    "primary": "#1C1C1C",
+    "light": "#F3F2F0",
+    "dark": "#1C1C1C"
   },
   "favicon": "/favicon.svg",
   "logo": {
@@ -31,16 +31,16 @@
       "family": "Geist"
     },
     "heading": {
-      "family": "Season Sans",
-      "source": "/fonts/SeasonSansUprightsVF.woff2",
+      "family": "Season Serif",
+      "source": "/fonts/SeasonSerif-Regular.woff2",
       "format": "woff2",
-      "weight": 600
+      "weight": 400
     }
   },
   "background": {
     "color": {
-      "light": "#FAF9F5",
-      "dark": "#1C1C1C"
+      "light": "#F3F2F0",
+      "dark": "#171615"
     }
   },
   "styling": {
