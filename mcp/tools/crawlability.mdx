@@ -1,0 +1,12 @@
+---
+title: "Crawlability tools"
+sidebarTitle: "Crawlability"
+icon: "spider"
+description: Start crawlability analyses and read how well AI engines can read your pages.
+---
+
+| Tool | Access | Description |
+|------|--------|-------------|
+| `list_crawlability_analyses` | read | The account's analyses: id, name, domain, status, URL count, date (optional `projectId`, `search`) |
+| `get_crawlability_results` | read | Results per URL: AI readability and E-E-A-T scores, issues and recommendations. While URLs are processing their status says so — call again a minute later |
+| `run_crawlability_analysis` | write | Crawl up to 20 URLs. Costs credits per URL from the account's balance (from the Business plan). Returns the `analysisId` at once; results take one to a few minutes |

@@ -1,0 +1,21 @@
+---
+title: "Report-Tools"
+sidebarTitle: "Reports"
+icon: "presentation-screen"
+description: Einen Report oder ein Pitch-Deck aus deiner Vorlage erstellen und den Share-Link bekommen.
+---
+
+| Tool | Zugriff | Beschreibung |
+|------|--------|-------------|
+| `list_report_templates` | lesen | Die gespeicherten Vorlagen des Workspaces (Report Builder → **Save as template**) |
+| `list_reports` | lesen | Reports eines Projekts mit Share-Link der veröffentlichten |
+| `create_report_from_template` | schreiben | Report aus Vorlage erstellen und veröffentlichen. Liefert `url` (Share-Link, zeigt immer aktuelle Daten), `editUrl`, `tagMapping` und `droppedPages` |
+| `set_report_sharing` | schreiben | Wer den Report öffnen darf: `link` (jeder mit Link), `invite` (nur die E-Mails / `@firma.de`-Domains in `invite`, Bestätigung per Code) oder `private` (nicht veröffentlicht) |
+
+### So passen sich Vorlagen an jedes Projekt an
+
+Eine Vorlage zeigt nie Daten eines anderen Projekts:
+
+- **Tags werden zu Platzhaltern.** Beim Speichern als Vorlage wird jeder Tag zu seinem Rang im Projekt nach Anzahl der Prompts — *Top-Tag 1*, *Top-Tag 2* … Im neuen Projekt ist *Top-Tag 2* dessen zweiter Tag.
+- **Folien, die nicht korrekt darstellbar sind, fallen weg** — z. B. eine Folie für *Top-Tag 4* in einem Projekt mit drei Tags oder eine Gemini-Folie ohne Gemini-Tracking. `droppedPages` listet sie.
+- **Namen werden zu dynamischen Feldern.** Zeigt eine Folie noch Marke, Wettbewerber oder Prompts des Quellprojekts als festen Text, listet der Speichern-Dialog sie und bietet an: in dynamische Felder umwandeln (z. B. *Bosch → Wettbewerber #1*), Folien weglassen oder Text behalten.

@@ -1,12 +1,13 @@
 ---
 title: "Finseo MCP Server: Claude, ChatGPT & Cursor"
-sidebarTitle: "MCP Integration"
-description: Connect Finseo to AI assistants like Claude, ChatGPT and Cursor.
+sidebarTitle: "Overview"
+icon: "plug"
+description: Connect Finseo to AI assistants like Claude, ChatGPT and Cursor — read your AI visibility data and, if your workspace allows it, change prompts, tags, pitch projects and reports.
 ---
 
 # MCP Integration
 
-Finseo provides a Model Context Protocol (MCP) server that lets AI assistants query your visibility data directly.
+Finseo provides a Model Context Protocol (MCP) server. AI assistants use it to read your visibility data and, when your workspace allows it, to change data in Finseo.
 
 ## What is MCP?
 
@@ -20,9 +21,11 @@ Claude automatically queries your Finseo data and provides analysis.
 
 ## Setup guides
 
-- [Claude (claude.ai, Desktop, Code)](/mcp/claude-desktop) — OAuth, no API key needed
-- [ChatGPT (developer mode)](/mcp/chatgpt) — OAuth, no API key needed
-- [Cursor](/mcp/cursor) — API key via headers
+<CardGroup cols={3}>
+  <Card title="Claude" icon="message-bot" href="/mcp/claude-desktop">claude.ai, Desktop and Code — OAuth, no API key</Card>
+  <Card title="ChatGPT" icon="comments" href="/mcp/chatgpt">Developer mode — OAuth, no API key</Card>
+  <Card title="Cursor" icon="code" href="/mcp/cursor">API key via headers</Card>
+</CardGroup>
 
 ## Authentication
 
@@ -33,82 +36,20 @@ The MCP server supports two authentication methods:
 | **OAuth 2.1** | Claude, ChatGPT | Add the server URL, sign in with your Finseo account — the server supports Dynamic Client Registration and PKCE |
 | **API key** | Cursor, custom clients | Send `Authorization: Bearer sk_live_...` ([create a key](https://app.finseo.ai/developer)) |
 
-## Available tools
+Reading works for everyone with MCP access. Changing data needs the **write** permission and a workspace that allows it — see [Permissions](/mcp/permissions).
 
-All tools are **read-only** — they retrieve data and never modify it.
+## Tools
 
-| Tool | Description |
-|------|-------------|
-| `list_projects` | List all your projects with `language`, `isPitch` and `models` (the AI models the project's prompts run on — the valid values for the `model` filter on the other tools) |
-| `get_visibility_metrics` | Visibility KPIs — the dashboard "Visibility" rate (named OR cited), Mention Rate, Citation Rate and the own-domain "Citations" count, with previous-period comparison |
-| `get_visibility_timeseries` | Per-day visibility, mention rate, citation rate, mentions, ordinal position (`avgMentionOrder`), mention depth and sentiment (same values as the dashboard chart) |
-| `list_prompts` | Tracked prompts with metrics (visible, mention rate, citation rate), top competitors and per-prompt citations (paginated via `offset`/`hasMore`) — returns the prompt `id` used by the prompt drill-down tools |
-| `get_prompt_details` | Drill into one prompt: per-model metrics and the full answer history (one row per AI answer with mention, depth, sentiment and brands named) |
-| `get_answer_content` | Read the actual AI answers for one prompt on one day: full answer text, brands with sentiment, and every cited source (`concise`/`detailed` format) |
-| `get_competitor_ranking` | Competitor ranking with the full dashboard KPI set: visibility (named OR cited), mention rate, citation rate, mentions, Share of Voice, ordinal position (`avgMentionOrder`), mention depth, #1/Top-3 share, head-to-head and citations — returns the competitor `id` used by the drill-down tools |
-| `get_competitor_gap_analysis` | Gap analysis vs one competitor: answers where only they appear (your losses), head-to-head, and your wins — with the concrete prompts behind them |
-| `get_competitor_h2h` | Head-to-head vs one competitor: who is named first, average mention order, and LLM-judged comparative claims |
-| `get_sentiment_overview` | Sentiment & Share of Voice: uncapped SoV with explicit denominators, per-brand sentiment leaderboard with win rates and aspect scores, and the most negative LLM-judged statements |
-| `get_top_sources` | Most cited sources with citation counts and source types |
-| `get_entity_tree` | The project's entity tree (companies › sub-brands › products › ingredients), the levels available and `ownOptions` — which of your own entities can be "you" per level. Call it before using `entityLevel` |
-| `get_tags` | List tags with prompt counts |
-| `get_query_fanouts` | AI query fan-outs (sub-queries) ranked by frequency |
-| `list_tasks` | AI-generated optimization tasks (the dashboard Tasks page) sorted by priority score, with status/category/impact filters — returns the task `id` used by `get_task_details` |
-| `get_task_details` | One task in full: description, step-by-step plan, the evidence that triggered it, and the structured content plan for content tasks |
-
-The analytics tools accept optional `model` (e.g. `chatgpt`, `perplexity`, `ai_overview`, `copilot`, `gemini`, `grok`) and `tags` filters — the same filters as the dashboard.
-
-`get_visibility_metrics`, `get_visibility_timeseries`, `get_competitor_ranking` and `get_sentiment_overview` also accept `entityLevel` and `ownEntity` (see [Entity levels](#entity-levels)).
-
-### Visibility, Mention Rate and Citation Rate
-
-A brand is **visible** in an AI answer when it is named in the answer text *or* one of its domains is cited as a source. The tools report all three rates with the same denominator (all analyzed answers), so they can be compared directly (see [KPIs explained](/getting-started/kpis)):
-
-- `visibilityRatePercent` — named **or** cited (the dashboard "Visibility" KPI)
-- `mentionRatePercent` — named in the answer text
-- `citationRatePercent` — own domain (or a configured domain alias) cited as a source
-
-One answer can count in both Mention Rate and Citation Rate, so Visibility ≤ Mention Rate + Citation Rate. Example: *"Visibility 50%, Mention Rate 45%, Citation Rate 20%"* means 15% of answers name and cite the brand, 30% only name it and 5% only link to it.
-
-### Position vs. mention depth
-
-Tools report two distinct metrics (see [KPIs explained](/getting-started/kpis)):
-
-- `avgMentionOrder` — the ordinal **Position** KPI: average rank among all brands named in an answer (1 = named first, lower is better; e.g. `2.3` = typically the 2nd–3rd brand mentioned). This matches the `#2.3`-style Position column on the dashboard competitors page.
-- `mentionDepthPercent` — **Mention Depth**: how deep in the answer *text* the mention appears (0% = very top, lower is better). Not a ranking position.
-
-### Timeframes
-
-Every analytics tool defaults to a relative window (`timeframeDays`, default 30, ending yesterday). For an exact period, pass an absolute range instead:
-
-- `startDate` + `endDate` (both `YYYY-MM-DD`, always together) — overrides `timeframeDays`.
-- Supported on `get_visibility_metrics`, `get_visibility_timeseries` (max 90 days), `get_competitor_ranking`, `get_top_sources`, `get_query_fanouts`, `get_competitor_gap_analysis`, `get_competitor_h2h` and `get_sentiment_overview`.
-- `get_visibility_metrics` compares the custom range against the same number of days immediately before it.
-- `list_prompts` only supports relative windows.
-
-Example: *"Compare my visibility for July 1–31 against the previous month"* → the assistant calls `get_visibility_metrics` with `startDate: "2026-07-01"`, `endDate: "2026-07-31"`.
-
-### Entity levels
-
-Projects with the entity tree switched on group every mention by entity: companies, sub-brands (brand lines, subsidiaries), products and ingredients. `entityLevel` picks the level a tool evaluates on:
-
-- `company` (default) — every row is a company; sub-brands, products and ingredients count for their company. "You" is your company.
-- `sub_brands` — brand lines and subsidiaries as rows of their own, with their products.
-- `products` — product brands; ingredients count for their product. "You" is your main product (the one with the most answers), or the one you pass as `ownEntity`.
-- `ingredients` — active substances and materials.
-
-Counting never changes between levels: an answer naming a company and two of its products counts once for the company on `company` and once per product on `products`. Call `get_entity_tree` first — it returns the levels the project has and `ownOptions` (the ids you can pass as `ownEntity`). Projects without a live tree ignore both arguments and report the company grouping.
-
-Example: *"How visible is Lorbrena compared to Alecensa?"* → `get_entity_tree`, then `get_competitor_ranking` with `entityLevel: "products"`, `ownEntity: <Lorbrena id>`.
-
-### Drill-down workflow
-
-Go from overview to detail — the tools chain from broad to a single AI answer:
-
-- **Competitor track:** `get_visibility_metrics` for the big picture → `get_competitor_ranking` to find the competitors that matter (each row carries an `id`) → `get_competitor_gap_analysis` / `get_competitor_h2h` with that `competitorId` for the prompt-level "where do we lose and why".
-- **Prompt track:** `list_prompts` to find the prompts that matter (each row carries an `id`) → `get_prompt_details` with that `promptId` for the per-answer history and available dates → `get_answer_content` with `promptId` + `date` to read the exact AI answer, the brands it names and the sources it cites.
-- **Sentiment track:** `get_sentiment_overview` for Share of Voice, the sentiment leaderboard and the most negative statements about any brand.
-- **Tasks track:** `list_tasks` for the prioritized optimization backlog (each row carries an `id`) → `get_task_details` with that `taskId` for the full action plan and the evidence behind it.
+<CardGroup cols={2}>
+  <Card title="Analytics" icon="chart-line" href="/mcp/tools/analytics">Visibility, prompts, AI answers, sources, sentiment, fan-outs, entity levels</Card>
+  <Card title="Competitors" icon="users" href="/mcp/tools/competitors">Ranking, gap analysis, head-to-head</Card>
+  <Card title="Prompts & tags" icon="tags" href="/mcp/tools/prompts">Add, tag, archive and restore prompts; tracking frequency</Card>
+  <Card title="Projects & pitches" icon="folder-open" href="/mcp/tools/projects">Projects, data readiness, pitch projects</Card>
+  <Card title="Reports" icon="presentation-screen" href="/mcp/tools/reports">Reports from templates with a share link</Card>
+  <Card title="Crawlability" icon="spider" href="/mcp/tools/crawlability">Start crawls and read AI-readability results</Card>
+  <Card title="Tasks" icon="list-check" href="/mcp/tools/tasks">Prioritized optimization tasks</Card>
+  <Card title="Outreach" icon="paper-plane" href="/mcp/tools/outreach">Digital PR campaigns and press inbox</Card>
+</CardGroup>
 
 ## Example prompts
 
@@ -122,18 +63,8 @@ Try asking your AI assistant:
 - *"Show me what ChatGPT actually answered yesterday for my prompt 'best CRM for startups' — full text and the sources it cited."*
 - *"What is my Share of Voice, and which negative statements do AI models make about my brand?"*
 - *"What are my most important open optimization tasks, and what exactly should I do for the top one?"*
-
-### Metric definitions
-
-The tools return the same numbers as the Finseo dashboard and label them explicitly:
-
-- **`visibilityRatePercent`** — share of analyzed AI answers where your brand is visible: named in the answer text OR your own domain cited as a source (the dashboard "Visibility" KPI)
-- **`mentionRatePercent`** — share of answers naming your brand in the text (the dashboard "Mention Rate" KPI)
-- **`citationRatePercent`** — share of answers citing your own domain or a domain alias as a source (the dashboard "Citation Rate" KPI)
-- **`promptCoveragePercent`** — share of tracked prompts with at least one visible answer (a different, usually higher number)
-- **`brandMentions`** / **`ownDomainCitedAnswers`** — the absolute counts behind Mention Rate and Citation Rate
-- **`ownDomainCitations.total`** — AI answers citing your own domain as a source (the dashboard "Citations" KPI)
-- **`visibilityIsMentionOnly`** (competitor ranking) — `true` when the citation leg could not be resolved for that brand and `visibilityRatePercent` equals the mention-based rate
+- *"Add these five prompts to my pitch project and tag them 'pricing'."* (needs write access)
+- *"Create the pitch deck from my 'Agency Pitch' template and give me the link."* (needs write access)
 
 ## Endpoint
 

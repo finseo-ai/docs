@@ -1,0 +1,22 @@
+---
+title: "Prompt and tag tools"
+sidebarTitle: "Prompts & tags"
+icon: "tags"
+description: Add, tag, archive and restore prompts and set the tracking frequency — with the same limits as the dashboard.
+---
+
+<Note>
+  These tools change data. They need the **write** permission and a workspace that allows changes through MCP — see [Permissions](/mcp/permissions). Every change appears in the audit trail with the actor **MCP**.
+</Note>
+
+| Tool | Description |
+|------|-------------|
+| `add_prompts` | Track up to 50 new prompts in a project. They run on the project's model settings and count against the plan's prompt slots or the pitch cap; prompts over the limit come back under `rejected`. Tags given here are created in the project if missing |
+| `tag_prompts` | Add tags to, remove tags from, or replace the tags of up to 50 prompts (`operation`: `add`, `remove`, `replace`) |
+| `create_tag` | Create a tag in the project's tag library without attaching it |
+| `delete_tag` | Delete a tag: it is removed from every prompt carrying it and from the tag library. The prompts and their data stay |
+| `archive_prompts` | Stop tracking up to 50 prompts. Their history stays and they free their prompt slots |
+| `restore_prompts` | Resume archived prompts on the project's current model settings. Counts against the prompt slots like adding them; an ended pitch must be converted first |
+| `set_tracking_frequency` | `daily` or `weekly`. Weekly projects use a seventh of the prompt slots |
+
+Prompts cannot be deleted through MCP — archive them instead. Look up ids with `list_prompts` and tag names with `get_tags` first, and confirm the change with the user.

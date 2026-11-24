@@ -5,6 +5,8 @@ api: GET /v1/projects/{projectId}
 
 Retrieves a single project by ID, including settings used for AI visibility tracking.
 
+`tracking` says whether the project has data yet: `ready` is `true` once every active prompt has at least one AI answer. Poll it after creating a (pitch) project and adding prompts, before reading results or [creating a report](/api-reference/reports/create).
+
 <ParamField path="projectId" type="string" required>
   MongoDB-style project identifier.
 </ParamField>
@@ -51,7 +53,15 @@ print(r.json()["data"])
       "defaultLanguage": "en"
     },
     "createdAt": "2025-11-12T10:15:00.000Z",
-    "updatedAt": "2026-03-28T14:22:00.000Z"
+    "updatedAt": "2026-03-28T14:22:00.000Z",
+    "tracking": {
+      "ready": true,
+      "activePrompts": 25,
+      "promptsWithAnswers": 25,
+      "answers": 75,
+      "firstAnswerAt": "2026-11-24T10:57:25.072Z",
+      "lastAnswerAt": "2026-11-24T10:58:44.745Z"
+    }
   }
 }
 ```

@@ -1,0 +1,28 @@
+---
+title: "Permissions: reading and changing data"
+sidebarTitle: "Permissions"
+icon: "lock"
+description: Who may change data through MCP — the write scope, the workspace switch and workspace roles.
+---
+
+Reading works for everyone with MCP access. Changing data (prompts, tags, pitch projects, reports, crawls, outreach) needs three things:
+
+<Steps>
+  <Step title="Your workspace allows changes">
+    In Finseo, open **Developer → MCP → Changes through MCP** (owner or admin). Choose **Read only** (default), **Owner and admins**, or **Everyone who edits projects** (also members and teamleads, each in the projects they can open). The Client role is always read-only.
+  </Step>
+  <Step title="The connection has the write permission">
+    **OAuth** (Claude, ChatGPT): the **Allow access** page lists *Add, tag and archive prompts, …*. Connectors added before write tools existed only have read access — reconnect once. **API keys** need the `write` scope.
+  </Step>
+  <Step title="Your role allows the action">
+    Each change runs the same check as in the app, for example: adding prompts needs a role that edits project data, the tracking frequency and pitch projects need owner or admin.
+  </Step>
+</Steps>
+
+Every change runs through the same code as the dashboard — plan limits, pitch caps and credits apply — and appears in the audit trail with the actor **MCP**. Prompts and projects cannot be deleted through MCP.
+
+### Errors
+
+- *"Changing data through MCP is switched off for this workspace…"* — switch it on under **Developer → MCP**.
+- *"This tool changes data and needs a credential with the write scope"* — reconnect the connector or use a key with `write`.
+- *"Your workspace role does not allow this"* — ask an owner or admin.

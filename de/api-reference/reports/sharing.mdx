@@ -1,0 +1,34 @@
+---
+title: Freigabe eines Reports ändern
+api: PATCH /v1/projects/{projectId}/reports/{reportId}
+---
+
+Ändert, wer einen Report öffnen darf — dieselben Einstellungen wie der **Share**-Dialog im Report Builder.
+
+<ParamField path="projectId" type="string" required>
+  Project identifier.
+</ParamField>
+
+<ParamField path="reportId" type="string" required>
+  Report-id aus [List Reports](/de/api-reference/reports/list).
+</ParamField>
+
+<ParamField body="share" type="string" required>
+  `link`, `invite` oder `private` (nicht veröffentlicht).
+</ParamField>
+
+<ParamField body="invite" type="array">
+  Bei `invite`: E-Mails oder `@firma.de`-Domains (Freemail-Domains nicht als Ganzes).
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request PATCH \
+  --url https://api.finseo.ai/v1/projects/67a1c2d3e4f5061728394a5b/reports/32f6955c-f4f2-42ec-a7bf-d602152a80c3 \
+  --header "Authorization: Bearer $FINSEO_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{ "share": "invite", "invite": ["@prospect.example"] }'
+```
+
+</RequestExample>

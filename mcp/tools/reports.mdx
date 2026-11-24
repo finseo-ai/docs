@@ -1,0 +1,21 @@
+---
+title: "Report tools"
+sidebarTitle: "Reports"
+icon: "presentation-screen"
+description: Create a report or pitch deck from your template and get its share link.
+---
+
+| Tool | Access | Description |
+|------|--------|-------------|
+| `list_report_templates` | read | Your workspace's saved templates (Report Builder → **Save as template**): id, name, page count |
+| `list_reports` | read | A project's reports: title, client, pages, published, and the share link of published ones |
+| `create_report_from_template` | write | Create a report from a template and publish it. Returns `url` (the share link, always showing current data), `editUrl`, `tagMapping` and `droppedPages` |
+| `set_report_sharing` | write | Change who can open a report: `link` (anyone with the link), `invite` (only the emails / `@company.com` domains in `invite`; they confirm with a code sent by email) or `private` (unpublished) |
+
+### How templates adapt to each project
+
+A template never carries another project's data:
+
+- **Tags become placeholders.** When you save a report as a template, every tag a slide uses becomes its rank in the project by number of prompts — *Top tag 1*, *Top tag 2* … On a new project, *Top tag 2* is that project's second tag.
+- **Slides that cannot be shown truthfully are left out** — for example a slide for *Top tag 4* on a project with three tags, or a Gemini slide on a project that does not track Gemini. `droppedPages` lists them; nothing falls back to other data.
+- **Names become dynamic fields.** If a slide still shows the source project's brand, competitors or prompts as fixed text, the save dialog lists them and offers to turn them into dynamic fields (e.g. *Bosch → Competitor #1*), leave those slides out, or keep the text.

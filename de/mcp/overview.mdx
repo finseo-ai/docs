@@ -1,80 +1,51 @@
 ---
 title: "Finseo MCP Server: Claude, ChatGPT & Cursor"
-sidebarTitle: "MCP-Integration"
-description: Verbinde Finseo mit KI-Assistenten wie Claude, ChatGPT und Cursor.
+sidebarTitle: "Übersicht"
+icon: "plug"
+description: Verbinde Finseo mit KI-Assistenten wie Claude, ChatGPT und Cursor — lies deine AI-Sichtbarkeitsdaten und ändere, wenn dein Workspace es erlaubt, Prompts, Tags, Pitch-Projekte und Reports.
 ---
 
 # MCP-Integration
 
-Finseo stellt einen Model-Context-Protocol-Server (MCP) bereit, über den KI-Assistenten deine Sichtbarkeitsdaten direkt abfragen können.
+Finseo stellt einen Model-Context-Protocol-Server (MCP) bereit. KI-Assistenten lesen darüber deine Sichtbarkeitsdaten und können, wenn dein Workspace es erlaubt, auch Daten in Finseo ändern.
 
 ## Was ist MCP?
 
-MCP (Model Context Protocol) ist ein Standard, um KI-Modelle mit externen Datenquellen zu verbinden. Mit dem Finseo MCP-Server stellst du Claude, ChatGPT oder Cursor natürliche Fragen zu deiner KI-Sichtbarkeit — ganz ohne Code.
+MCP (Model Context Protocol) ist ein Standard, um KI-Modelle mit externen Datenquellen zu verbinden. Mit dem Finseo-MCP-Server stellst du Claude, ChatGPT oder Cursor Fragen zu deiner AI-Sichtbarkeit, ganz ohne Code.
 
 **Beispiel**: Öffne Claude und frag:
 
-> „Wie hat sich meine Markensichtbarkeit in den letzten 30 Tagen verändert? Welche Wettbewerber liegen vor mir?"
-
-Claude fragt automatisch deine Finseo-Daten ab und liefert die Analyse.
+> „Wie hat sich die Sichtbarkeit meiner Marke in den letzten 30 Tagen entwickelt? Welche Wettbewerber liegen vor mir?“
 
 ## Setup-Guides
 
-- [Claude (claude.ai, Desktop, Code)](/de/mcp/claude-desktop) — OAuth, kein API-Key nötig
-- [ChatGPT (Developer Mode)](/de/mcp/chatgpt) — OAuth, kein API-Key nötig
-- [Cursor](/de/mcp/cursor) — API-Key via Header
+<CardGroup cols={3}>
+  <Card title="Claude" icon="message-bot" href="/de/mcp/claude-desktop">claude.ai, Desktop und Code — OAuth, kein API-Key</Card>
+  <Card title="ChatGPT" icon="comments" href="/de/mcp/chatgpt">Developer-Modus — OAuth, kein API-Key</Card>
+  <Card title="Cursor" icon="code" href="/de/mcp/cursor">API-Key per Header</Card>
+</CardGroup>
 
 ## Authentifizierung
 
-Der MCP-Server unterstützt zwei Authentifizierungsmethoden:
-
-| Methode | Am besten für | So geht's |
+| Methode | Für | So geht's |
 |--------|----------|-----|
-| **OAuth 2.1** | Claude, ChatGPT | Server-URL hinzufügen und mit deinem Finseo-Account anmelden — der Server unterstützt Dynamic Client Registration und PKCE |
-| **API-Key** | Cursor, eigene Clients | Sende `Authorization: Bearer sk_live_...` ([Key erstellen](https://app.finseo.ai/developer)) |
+| **OAuth 2.1** | Claude, ChatGPT | Server-URL hinzufügen und mit dem Finseo-Konto anmelden — unterstützt Dynamic Client Registration und PKCE |
+| **API-Key** | Cursor, eigene Clients | `Authorization: Bearer sk_live_...` senden ([Key erstellen](https://app.finseo.ai/developer)) |
 
-## Verfügbare Tools
+Lesen kann jeder mit MCP-Zugang. Daten ändern braucht die **Schreib-Berechtigung** und einen Workspace, der es erlaubt — siehe [Berechtigungen](/de/mcp/permissions).
 
-Alle Tools sind **read-only** — sie rufen Daten ab und ändern nie etwas.
+## Tools
 
-| Tool | Beschreibung |
-|------|-------------|
-| `list_projects` | Alle deine Projekte auflisten, mit `language`, `isPitch` und `models` (die KI-Modelle, auf denen die Prompts des Projekts laufen — die gültigen Werte für den `model`-Filter der anderen Tools) |
-| `get_visibility_metrics` | Sichtbarkeits-KPIs — die Dashboard-„Visibility"-Rate (genannt ODER zitiert), Mention Rate, Citation Rate und die „Citations"-Anzahl für die eigene Domain, mit Vergleich zur Vorperiode |
-| `get_visibility_timeseries` | Visibility, Mention Rate, Citation Rate, Mentions, ordinale Position (`avgMentionOrder`), Mention Depth und Sentiment pro Tag (dieselben Werte wie im Dashboard-Chart) |
-| `list_prompts` | Getrackte Prompts mit Metriken (sichtbar, Mention Rate, Citation Rate), Top-Wettbewerbern und Citations pro Prompt (paginiert via `offset`/`hasMore`) — liefert die Prompt-`id` für die Prompt-Drill-down-Tools |
-| `get_prompt_details` | Drill-down in einen Prompt: Metriken pro Modell und die komplette Antwort-Historie (eine Zeile pro KI-Antwort mit Mention, Tiefe, Sentiment und genannten Marken) |
-| `get_answer_content` | Die tatsächlichen KI-Antworten eines Prompts an einem Tag lesen: voller Antworttext, Marken mit Sentiment und alle zitierten Quellen (`concise`/`detailed`) |
-| `get_competitor_ranking` | Wettbewerber-Ranking mit dem vollen Dashboard-KPI-Set: Visibility (genannt ODER zitiert), Mention Rate, Citation Rate, Mentions, Share of Voice, ordinale Position (`avgMentionOrder`), Mention Depth, #1-/Top-3-Anteil, Head-to-Head und Citations — liefert die Wettbewerber-`id` für die Drill-down-Tools |
-| `get_competitor_gap_analysis` | Gap-Analyse gegen einen Wettbewerber: Antworten, in denen nur er vorkommt (deine Verluste), Head-to-Head und deine Wins — inkl. der konkreten Prompts dahinter |
-| `get_competitor_h2h` | Head-to-Head gegen einen Wettbewerber: wer wird zuerst genannt, durchschnittliche Nennungsreihenfolge und LLM-bewertete Vergleichs-Claims |
-| `get_sentiment_overview` | Sentiment & Share of Voice: ungecappte SoV mit expliziten Nennern, Sentiment-Leaderboard pro Marke mit Win-Rates und Aspekt-Scores sowie die negativsten LLM-bewerteten Aussagen |
-| `get_top_sources` | Meistzitierte Quellen mit Citation-Anzahl und Quellentyp |
-| `get_tags` | Tags mit Prompt-Anzahl auflisten |
-| `get_query_fanouts` | KI-Query-Fan-outs (Sub-Queries), nach Häufigkeit sortiert |
-| `list_tasks` | KI-generierte Optimierungs-Tasks (die Tasks-Seite im Dashboard), nach Prioritäts-Score sortiert, mit Status-/Kategorie-/Impact-Filtern — liefert die Task-`id` für `get_task_details` |
-| `get_task_details` | Ein Task komplett: Beschreibung, Schritt-für-Schritt-Plan, die auslösende Evidenz und der strukturierte Content-Plan bei Content-Tasks |
-
-Die Analytics-Tools akzeptieren optionale Filter für `model` (z. B. `chatgpt`, `perplexity`, `ai_overview`, `copilot`, `gemini`, `grok`) und `tags` — dieselben Filter wie im Dashboard.
-
-### Visibility, Mention Rate und Citation Rate
-
-Eine Marke ist in einer KI-Antwort **sichtbar**, wenn sie im Antworttext genannt wird *oder* eine ihrer Domains als Quelle zitiert wird. Die Tools liefern alle drei Raten mit demselben Nenner (alle analysierten Antworten), sodass sie direkt vergleichbar sind (siehe [KPIs erklärt](/de/getting-started/kpis)):
-
-- `visibilityRatePercent` — genannt **oder** zitiert (der „Visibility"-KPI im Dashboard)
-- `mentionRatePercent` — im Antworttext genannt
-- `citationRatePercent` — eigene Domain (oder ein konfigurierter Domain-Alias) als Quelle zitiert
-
-Eine Antwort kann sowohl in Mention Rate als auch in Citation Rate zählen, daher gilt Visibility ≤ Mention Rate + Citation Rate. Beispiel: *„Visibility 50 %, Mention Rate 45 %, Citation Rate 20 %"* bedeutet: 15 % der Antworten nennen und zitieren die Marke, 30 % nennen sie nur, 5 % verlinken sie nur.
-
-### Drill-down-Workflow
-
-Von der Übersicht bis zur einzelnen KI-Antwort — die Tools bauen aufeinander auf:
-
-- **Wettbewerber-Pfad:** `get_visibility_metrics` für das Gesamtbild → `get_competitor_ranking` für die relevanten Wettbewerber (jede Zeile enthält eine `id`) → `get_competitor_gap_analysis` / `get_competitor_h2h` mit dieser `competitorId` für die Prompt-Ebene: „Wo verlieren wir und warum?"
-- **Prompt-Pfad:** `list_prompts` für die relevanten Prompts (jede Zeile enthält eine `id`) → `get_prompt_details` mit dieser `promptId` für die Antwort-Historie und verfügbaren Tage → `get_answer_content` mit `promptId` + `date` für die exakte KI-Antwort, die genannten Marken und die zitierten Quellen.
-- **Sentiment-Pfad:** `get_sentiment_overview` für Share of Voice, das Sentiment-Leaderboard und die negativsten Aussagen über jede Marke.
-- **Tasks-Pfad:** `list_tasks` für das priorisierte Optimierungs-Backlog (jede Zeile trägt eine `id`) → `get_task_details` mit dieser `taskId` für den vollständigen Maßnahmenplan und die Evidenz dahinter.
+<CardGroup cols={2}>
+  <Card title="Analytics" icon="chart-line" href="/de/mcp/tools/analytics">Sichtbarkeit, Prompts, KI-Antworten, Quellen, Sentiment, Fan-outs, Entitäten-Ebenen</Card>
+  <Card title="Wettbewerber" icon="users" href="/de/mcp/tools/competitors">Ranking, Gap-Analyse, Head-to-Head</Card>
+  <Card title="Prompts & Tags" icon="tags" href="/de/mcp/tools/prompts">Prompts hinzufügen, taggen, archivieren, wiederherstellen; Tracking-Frequenz</Card>
+  <Card title="Projekte & Pitches" icon="folder-open" href="/de/mcp/tools/projects">Projekte, Datenstand, Pitch-Projekte</Card>
+  <Card title="Reports" icon="presentation-screen" href="/de/mcp/tools/reports">Reports aus Vorlagen mit Share-Link</Card>
+  <Card title="Crawlability" icon="spider" href="/de/mcp/tools/crawlability">Crawls starten und Ergebnisse lesen</Card>
+  <Card title="Tasks" icon="list-check" href="/de/mcp/tools/tasks">Priorisierte Optimierungs-Tasks</Card>
+  <Card title="Outreach" icon="paper-plane" href="/de/mcp/tools/outreach">Digital-PR-Kampagnen und Presse-Inbox</Card>
+</CardGroup>
 
 ## Beispiel-Prompts
 
@@ -88,18 +59,8 @@ Frag deinen KI-Assistenten zum Beispiel:
 - *„Zeig mir, was ChatGPT gestern auf meinen Prompt ‚beste CRM für Startups' tatsächlich geantwortet hat — voller Text und die zitierten Quellen."*
 - *„Wie hoch ist mein Share of Voice, und welche negativen Aussagen machen KI-Modelle über meine Marke?"*
 - *„Was sind meine wichtigsten offenen Optimierungs-Tasks, und was genau soll ich beim Top-Task tun?"*
-
-### Metrik-Definitionen
-
-Die Tools liefern dieselben Zahlen wie das Finseo Dashboard und benennen sie explizit:
-
-- **`visibilityRatePercent`** — Anteil der analysierten KI-Antworten, in denen deine Marke sichtbar ist: im Antworttext genannt ODER deine eigene Domain als Quelle zitiert (der „Visibility"-KPI im Dashboard)
-- **`mentionRatePercent`** — Anteil der Antworten, die deine Marke im Text nennen (der „Mention Rate"-KPI im Dashboard)
-- **`citationRatePercent`** — Anteil der Antworten, die deine eigene Domain oder einen Domain-Alias als Quelle zitieren (der „Citation Rate"-KPI im Dashboard)
-- **`promptCoveragePercent`** — Anteil der getrackten Prompts mit mindestens einer sichtbaren Antwort (eine andere, meist höhere Zahl)
-- **`brandMentions`** / **`ownDomainCitedAnswers`** — die absoluten Zahlen hinter Mention Rate und Citation Rate
-- **`ownDomainCitations.total`** — KI-Antworten, die deine eigene Domain als Quelle zitieren (der „Citations"-KPI im Dashboard)
-- **`visibilityIsMentionOnly`** (Wettbewerber-Ranking) — `true`, wenn der Citation-Anteil für diese Marke nicht ermittelt werden konnte und `visibilityRatePercent` der rein mention-basierten Rate entspricht
+- *„Füge diese fünf Prompts zu meinem Pitch-Projekt hinzu und tagge sie mit ‚Preise‘.“* (braucht Schreibrechte)
+- *„Erstelle das Pitch-Deck aus meiner Vorlage ‚Agentur-Pitch‘ und gib mir den Link.“* (braucht Schreibrechte)
 
 ## Endpoint
 

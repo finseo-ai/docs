@@ -96,7 +96,34 @@ Mögliche `403`-Gründe: `pitch_prompt_limit` (50 Prompts erreicht),
 `pitch_expired`, `agency_limit`. Ein Modell, das im Projekt nicht aktiviert ist,
 liefert `400 model_not_enabled` — zurück zu Schritt 2.
 
-## 4. Ergebnisse auslesen
+## 4. Auf die Daten warten
+
+Frag das Projekt ab, bis jeder Prompt seine erste KI-Antwort hat:
+
+```bash
+curl --url https://api.finseo.ai/v1/projects/{projectId} \
+  --header "Authorization: Bearer $FINSEO_API_KEY"
+# → data.tracking.ready = true
+```
+
+## 5. Pitch-Deck erstellen
+
+Erstelle das Deck aus deiner Vorlage und verschicke die zurückgegebene `url`
+(z. B. aus deinem CRM). Tags der Vorlage passen sich an die Tags des
+Interessenten an; Folien, die für dieses Projekt nicht darstellbar sind, fallen
+weg — siehe [Report aus Vorlage erstellen](/de/api-reference/reports/create).
+
+```bash
+curl --request POST \
+  --url https://api.finseo.ai/v1/projects/{projectId}/reports \
+  --header "Authorization: Bearer $FINSEO_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{"templateId": "<deine Vorlagen-id>", "title": "KI-Sichtbarkeit – Prospect GmbH", "share": "link"}'
+```
+
+Wer es öffnen darf, änderst du später mit [Freigabe ändern](/de/api-reference/reports/sharing).
+
+## 6. Ergebnisse auslesen
 
 Gib den Workern ein paar Minuten für die ersten Antworten; ein vollständiger
 Pitch hat in der Regel einen Lauf pro Tag. Lies dann die KPIs, das
@@ -118,7 +145,7 @@ curl --url 'https://api.finseo.ai/v1/projects/{projectId}/prompts?timeframe=7d' 
 [KPIs erklärt](/de/getting-started/kpis) beschrieben. Filtere auf eine einzelne
 Engine mit `model=<id>`, wobei `<id>` eines der `models` des Projekts ist.
 
-## 5. Gewonnenen Pitch umwandeln
+## 7. Gewonnenen Pitch umwandeln
 
 Macht aus dem Pitch ein abrechenbares Kundenprojekt: hebt das Prompt-Limit auf,
 stoppt die automatische Pausierung und aktiviert alles wieder, was der Ablauf
@@ -144,5 +171,7 @@ Vollmonatspreis übersteigen.
 | Pitch erstellen | [POST /v1/projects](/de/api-reference/projects/create) |
 | Modelle setzen | [PUT /v1/projects/\{projectId\}](/de/api-reference/projects/update) |
 | Prompts hinzufügen | [POST /v1/projects/\{projectId\}/prompts](/de/api-reference/prompts/add) |
+| Auf Daten warten | [GET /v1/projects/\{projectId\}](/de/api-reference/projects/get) → `tracking.ready` |
+| Pitch-Deck | [GET /v1/report-templates](/de/api-reference/reports/templates), [POST /v1/projects/\{projectId\}/reports](/de/api-reference/reports/create) |
 | Ergebnisse auslesen | [GET /metrics](/de/api-reference/metrics/daily), [GET /competitors](/de/api-reference/competitors/ranking), [GET /prompts](/de/api-reference/prompts/list) |
 | Umwandeln | [PUT /v1/projects/\{projectId\}](/de/api-reference/projects/update) mit `convertFromPitch` |

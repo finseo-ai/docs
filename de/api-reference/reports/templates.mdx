@@ -1,0 +1,27 @@
+---
+title: Report-Vorlagen auflisten
+api: GET /v1/report-templates
+---
+
+Die gespeicherten Report-Vorlagen deines Workspaces (Report Builder → **Save as template**). Die `id` übergibst du an [Report aus Vorlage erstellen](/de/api-reference/reports/create).
+
+<RequestExample>
+
+```bash cURL
+curl --url https://api.finseo.ai/v1/report-templates \
+  --header "Authorization: Bearer $FINSEO_API_KEY"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": [
+    { "id": "2e48af74-0a5b-4d1a-b04c-4d1d7a65b6bc", "name": "Agency Pitch", "description": null, "pages": 11, "layout": "deck", "updatedAt": "2026-11-20T09:03:14.081Z" }
+  ]
+}
+```
+
+</ResponseExample>

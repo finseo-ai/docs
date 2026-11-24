@@ -249,6 +249,15 @@
                 ]
               },
               {
+                "group": "Reports",
+                "pages": [
+                  "api-reference/reports/templates",
+                  "api-reference/reports/list",
+                  "api-reference/reports/create",
+                  "api-reference/reports/sharing"
+                ]
+              },
+              {
                 "group": "Fan-outs",
                 "pages": [
                   "api-reference/fanouts/list",
@@ -283,12 +292,26 @@
             "tab": "MCP",
             "groups": [
               {
-                "group": "MCP Integration",
+                "group": "Get started",
                 "pages": [
                   "mcp/overview",
                   "mcp/claude-desktop",
                   "mcp/chatgpt",
-                  "mcp/cursor"
+                  "mcp/cursor",
+                  "mcp/permissions"
+                ]
+              },
+              {
+                "group": "Tools",
+                "pages": [
+                  "mcp/tools/analytics",
+                  "mcp/tools/competitors",
+                  "mcp/tools/prompts",
+                  "mcp/tools/projects",
+                  "mcp/tools/reports",
+                  "mcp/tools/crawlability",
+                  "mcp/tools/tasks",
+                  "mcp/tools/outreach"
                 ]
               }
             ]
@@ -475,6 +498,15 @@
                 ]
               },
               {
+                "group": "Reports",
+                "pages": [
+                  "de/api-reference/reports/templates",
+                  "de/api-reference/reports/list",
+                  "de/api-reference/reports/create",
+                  "de/api-reference/reports/sharing"
+                ]
+              },
+              {
                 "group": "Fan-outs",
                 "pages": [
                   "de/api-reference/fanouts/list",
@@ -509,12 +541,26 @@
             "tab": "MCP",
             "groups": [
               {
-                "group": "MCP-Integration",
+                "group": "Erste Schritte",
                 "pages": [
                   "de/mcp/overview",
                   "de/mcp/claude-desktop",
                   "de/mcp/chatgpt",
-                  "de/mcp/cursor"
+                  "de/mcp/cursor",
+                  "de/mcp/permissions"
+                ]
+              },
+              {
+                "group": "Tools",
+                "pages": [
+                  "de/mcp/tools/analytics",
+                  "de/mcp/tools/competitors",
+                  "de/mcp/tools/prompts",
+                  "de/mcp/tools/projects",
+                  "de/mcp/tools/reports",
+                  "de/mcp/tools/crawlability",
+                  "de/mcp/tools/tasks",
+                  "de/mcp/tools/outreach"
                 ]
               }
             ]

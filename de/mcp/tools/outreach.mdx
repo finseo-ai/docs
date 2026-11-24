@@ -1,0 +1,23 @@
+---
+title: "Outreach-Tools"
+sidebarTitle: "Outreach"
+icon: "paper-plane"
+description: Digital-PR-Kampagnen bauen und die Presse-Inbox bearbeiten. Kein Tool versendet E-Mails — jede E-Mail gibt ein Mensch in Finseo frei.
+---
+
+Outreach ist ab dem Growth-Plan enthalten (Agenturen: pro Projekt, eingerichtet mit unserem Team).
+
+| Tool | Zugriff | Beschreibung |
+|------|--------|-------------|
+| `list_flow_node_types` | lesen | Schritt-Typen eines Flows (E-Mail, Warten, Wenn/Dann, Aufgabe, KI-Anweisung, LinkedIn, Ende) |
+| `list_flow_templates` | lesen | Fertige Outreach-Flows als Startpunkt |
+| `list_campaigns` | lesen | Kampagnen mit Status, Auslöser, Statistik und Link zum Flow-Builder |
+| `get_flow` / `get_flow_node` | lesen | Flow einer Kampagne und ein Schritt im Detail |
+| `draft_status` | lesen | Fortschritt eines Entwurfslaufs |
+| `list_requests` / `get_request` | lesen | Presse-Inbox: Anfragen von Journalist:innen |
+| `create_campaign` | schreiben | Kampagne aus Vorlage oder Satz anlegen |
+| `add_flow_node`, `update_flow_nodes`, `duplicate_flow_nodes`, `delete_flow_nodes` | schreiben | Schritte bearbeiten |
+| `connect_flow_nodes` / `disconnect_flow_nodes` | schreiben | Schritte verbinden |
+| `set_campaign_pitch` / `set_campaign_trigger` | schreiben | Pitch und Auslöser der Kampagne |
+| `draft_emails` | schreiben | E-Mails schreiben lassen (KI, kostet Credits — zuerst mit `estimate_only`) |
+| `draft_request_reply` / `dismiss_request` | schreiben | Presse-Anfrage beantworten oder verwerfen |

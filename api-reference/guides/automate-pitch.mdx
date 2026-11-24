@@ -1,7 +1,7 @@
 ---
 title: "Automate a pitch"
 sidebarTitle: "Automate a pitch"
-description: Create a pitch project, set its models, add prompts, read the results and convert a won pitch — the full agency flow in five API calls.
+description: Create a pitch project, set its models, add prompts, wait for the data, create the pitch deck from your template and convert a won pitch — the full agency flow.
 ---
 
 # Automate a pitch
@@ -91,11 +91,37 @@ Possible `403` reasons: `pitch_prompt_limit` (50 prompts reached),
 `pitch_expired`, `agency_limit`. Passing a model that is not enabled on the
 project returns `400 model_not_enabled` — go back to step 2.
 
-## 4. Read the results
+## 4. Wait for the data
 
-Give the workers a few minutes for the first answers; a full pitch usually has
-one run per day. Then read the KPIs, the competitor ranking and the per-prompt
-breakdown for the pitch window:
+Poll the project until every prompt has its first AI answer:
+
+```bash
+curl --url https://api.finseo.ai/v1/projects/{projectId} \
+  --header "Authorization: Bearer $FINSEO_API_KEY"
+# → data.tracking.ready = true
+```
+
+## 5. Create the pitch deck
+
+Create the deck from your template and send the returned `url` (e.g. from your
+CRM). Tags in the template adapt to the prospect's own tags; slides that cannot
+be shown for this project are left out — see
+[Create Report From Template](/api-reference/reports/create).
+
+```bash
+curl --request POST \
+  --url https://api.finseo.ai/v1/projects/{projectId}/reports \
+  --header "Authorization: Bearer $FINSEO_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{"templateId": "<your template id>", "title": "AI visibility – Prospect GmbH", "share": "link"}'
+```
+
+Change who can open it later with [Change Report Sharing](/api-reference/reports/sharing).
+
+## 6. Read the results
+
+A full pitch usually has one run per day. Read the KPIs, the competitor ranking
+and the per-prompt breakdown for the pitch window:
 
 ```bash
 curl --url 'https://api.finseo.ai/v1/projects/{projectId}/metrics?timeframe=7d' \
@@ -112,7 +138,7 @@ curl --url 'https://api.finseo.ai/v1/projects/{projectId}/prompts?timeframe=7d' 
 [KPIs explained](/getting-started/kpis). Filter by a single engine with
 `model=<id>`, using one of the project's `models`.
 
-## 5. Convert a won pitch
+## 7. Convert a won pitch
 
 Turn the pitch into a billable client project: lifts the prompt cap, stops the
 auto-pause and resumes anything the expiry paused.
@@ -136,5 +162,7 @@ prompts would exceed the included answer band at full-month pricing.
 | Create pitch | [POST /v1/projects](/api-reference/projects/create) |
 | Set models | [PUT /v1/projects/\{projectId\}](/api-reference/projects/update) |
 | Add prompts | [POST /v1/projects/\{projectId\}/prompts](/api-reference/prompts/add) |
+| Wait for data | [GET /v1/projects/\{projectId\}](/api-reference/projects/get) → `tracking.ready` |
+| Pitch deck | [GET /v1/report-templates](/api-reference/reports/templates), [POST /v1/projects/\{projectId\}/reports](/api-reference/reports/create) |
 | Read results | [GET /metrics](/api-reference/metrics/daily), [GET /competitors](/api-reference/competitors/ranking), [GET /prompts](/api-reference/prompts/list) |
 | Convert | [PUT /v1/projects/\{projectId\}](/api-reference/projects/update) with `convertFromPitch` |
