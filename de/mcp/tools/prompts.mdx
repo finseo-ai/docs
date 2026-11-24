@@ -1,0 +1,22 @@
+---
+title: "Prompt- und Tag-Tools"
+sidebarTitle: "Prompts & Tags"
+icon: "tags"
+description: Prompts hinzufügen, taggen, archivieren und wiederherstellen und die Tracking-Frequenz setzen — mit denselben Limits wie im Dashboard.
+---
+
+<Note>
+  Diese Tools ändern Daten. Sie brauchen die **Schreib-Berechtigung** und einen Workspace, der Änderungen über MCP erlaubt — siehe [Berechtigungen](/de/mcp/permissions). Jede Änderung steht im Audit-Trail mit dem Akteur **MCP**.
+</Note>
+
+| Tool | Beschreibung |
+|------|-------------|
+| `add_prompts` | Bis zu 50 neue Prompts tracken. Sie laufen auf den Modellen des Projekts und zählen gegen die Prompt-Slots bzw. das Pitch-Limit; was nicht passt, kommt unter `rejected` zurück. Angegebene Tags werden angelegt, falls sie fehlen |
+| `tag_prompts` | Tags bei bis zu 50 Prompts hinzufügen, entfernen oder ersetzen (`operation`: `add`, `remove`, `replace`) |
+| `create_tag` | Einen Tag in der Tag-Bibliothek des Projekts anlegen |
+| `delete_tag` | Einen Tag löschen: Er wird von allen Prompts entfernt und aus der Bibliothek gelöscht. Prompts und Daten bleiben |
+| `archive_prompts` | Bis zu 50 Prompts pausieren. Die Historie bleibt, die Slots werden frei |
+| `restore_prompts` | Archivierte Prompts wieder aufnehmen, auf den aktuellen Modellen des Projekts. Zählt gegen die Slots; ein beendeter Pitch muss zuerst umgewandelt werden |
+| `set_tracking_frequency` | `daily` oder `weekly`. Wöchentliche Projekte brauchen ein Siebtel der Prompt-Slots |
+
+Prompts lassen sich über MCP nicht löschen, nur archivieren.

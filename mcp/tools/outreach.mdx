@@ -1,0 +1,23 @@
+---
+title: "Outreach tools"
+sidebarTitle: "Outreach"
+icon: "paper-plane"
+description: Build digital PR campaigns and work the press inbox. No tool sends email — a person approves every email in Finseo.
+---
+
+Outreach is included from the Growth plan (agencies: per project, set up with our team).
+
+| Tool | Access | Description |
+|------|--------|-------------|
+| `list_flow_node_types` | read | Step kinds a flow can hold (email, wait, if/else, task, AI instructions, LinkedIn, end) |
+| `list_flow_templates` | read | Ready-made outreach flows to start a campaign from |
+| `list_campaigns` | read | The project's campaigns with status, trigger, stats and a link to the flow builder |
+| `get_flow` / `get_flow_node` | read | A campaign's flow and one step in detail |
+| `draft_status` | read | Progress of an email drafting run |
+| `list_requests` / `get_request` | read | Press inbox: journalist requests and one request in detail |
+| `create_campaign` | write | Create a campaign from a template or a sentence; picks the pages AI answers cite |
+| `add_flow_node`, `update_flow_nodes`, `duplicate_flow_nodes`, `delete_flow_nodes` | write | Edit the flow's steps |
+| `connect_flow_nodes` / `disconnect_flow_nodes` | write | Wire steps together |
+| `set_campaign_pitch` / `set_campaign_trigger` | write | The campaign's pitch and what starts it |
+| `draft_emails` | write | Write the emails (AI, costs credits — call with `estimate_only` first, then poll `draft_status`) |
+| `draft_request_reply` / `dismiss_request` | write | Answer or dismiss a press request |

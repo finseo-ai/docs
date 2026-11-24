@@ -1,0 +1,17 @@
+---
+title: "Projekt- und Pitch-Tools"
+sidebarTitle: "Projekte & Pitches"
+icon: "folder-open"
+description: Projekte auflisten, prüfen, ob ein Projekt schon Daten hat, und Pitch-Projekte für Interessenten anlegen.
+---
+
+| Tool | Zugriff | Beschreibung |
+|------|--------|-------------|
+| `list_projects` | lesen | Alle Projekte mit `language`, `isPitch` und `models`. Immer der erste Aufruf |
+| `get_project_status` | lesen | Hat das Projekt schon Daten? Aktive Prompts, Prompts mit Antwort, Antworten, erste/letzte Antwort und `ready` |
+| `create_pitch_project` | schreiben | Agenturen: Pitch-Projekt für einen Interessenten anlegen (1, 7 oder 14 Tage, bis zu 50 Prompts, belegt einen Pitch-Slot) |
+| `convert_pitch_project` | schreiben | Agenturen: gewonnenen Pitch in ein Kundenprojekt umwandeln. Die Daten bleiben |
+
+### Pitch-Ablauf
+
+`create_pitch_project` → `add_prompts` → `get_project_status` abfragen, bis `ready` → `create_report_from_template` → Link verschicken. Derselbe Ablauf geht per REST-API — siehe [Pitch automatisieren](/de/api-reference/guides/automate-pitch).

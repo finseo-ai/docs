@@ -1,0 +1,54 @@
+---
+title: "Analytics-Tools"
+sidebarTitle: "Analytics"
+icon: "chart-line"
+description: Sichtbarkeits-KPIs, Prompts, die echten KI-Antworten, Quellen, Sentiment, Fan-outs und Entitäten-Ebenen lesen.
+---
+
+Alle Tools auf dieser Seite sind **nur lesend**.
+
+| Tool | Beschreibung |
+|------|-------------|
+| `get_visibility_metrics` | Sichtbarkeits-KPIs — die Dashboard-„Visibility“ (genannt ODER zitiert), Mention Rate, Citation Rate und „Citations“ der eigenen Domain, mit Vergleich zum Vorzeitraum |
+| `get_visibility_timeseries` | Tageswerte für Visibility, Mention Rate, Citation Rate, Nennungen, Position (`avgMentionOrder`), Erwähnungstiefe und Sentiment |
+| `list_prompts` | Getrackte Prompts mit Kennzahlen, Top-Wettbewerbern und Citations pro Prompt — liefert die Prompt-`id` für die Detail-Tools |
+| `get_prompt_details` | Ein Prompt im Detail: Kennzahlen pro Modell und die komplette Antwort-Historie |
+| `get_answer_content` | Die echten KI-Antworten eines Prompts an einem Tag: Volltext, genannte Marken mit Sentiment, alle zitierten Quellen |
+| `get_top_sources` | Meistzitierte Quellen mit Anzahl und Quellentyp |
+| `get_sentiment_overview` | Sentiment & Share of Voice: Leaderboard, Win-Rates, Aspekte und die negativsten Aussagen |
+| `get_query_fanouts` | Fan-out-Suchanfragen der KI, nach Häufigkeit |
+| `get_entity_tree` | Der Entitäten-Baum des Projekts (Unternehmen › Sub-Brands › Produkte › Wirkstoffe), verfügbare Ebenen und `ownOptions` |
+| `get_tags` | Tags mit Anzahl der Prompts |
+
+Die Analytics-Tools akzeptieren optional `model` und `tags` — dieselben Filter wie im Dashboard. `get_visibility_metrics`, `get_visibility_timeseries`, `get_competitor_ranking` und `get_sentiment_overview` akzeptieren zusätzlich `entityLevel` und `ownEntity`.
+
+### Visibility, Mention Rate und Citation Rate
+
+Eine Marke ist in einer KI-Antwort **sichtbar**, wenn sie im Antworttext genannt wird *oder* eine ihrer Domains als Quelle zitiert wird. Die Tools liefern alle drei Raten mit demselben Nenner (alle analysierten Antworten), sodass sie direkt vergleichbar sind (siehe [KPIs erklärt](/de/getting-started/kpis)):
+
+- `visibilityRatePercent` — genannt **oder** zitiert (der „Visibility"-KPI im Dashboard)
+- `mentionRatePercent` — im Antworttext genannt
+- `citationRatePercent` — eigene Domain (oder ein konfigurierter Domain-Alias) als Quelle zitiert
+
+Eine Antwort kann sowohl in Mention Rate als auch in Citation Rate zählen, daher gilt Visibility ≤ Mention Rate + Citation Rate. Beispiel: *„Visibility 50 %, Mention Rate 45 %, Citation Rate 20 %"* bedeutet: 15 % der Antworten nennen und zitieren die Marke, 30 % nennen sie nur, 5 % verlinken sie nur.
+
+### Drill-down-Workflow
+
+Von der Übersicht bis zur einzelnen KI-Antwort — die Tools bauen aufeinander auf:
+
+- **Wettbewerber-Pfad:** `get_visibility_metrics` für das Gesamtbild → `get_competitor_ranking` für die relevanten Wettbewerber (jede Zeile enthält eine `id`) → `get_competitor_gap_analysis` / `get_competitor_h2h` mit dieser `competitorId` für die Prompt-Ebene: „Wo verlieren wir und warum?"
+- **Prompt-Pfad:** `list_prompts` für die relevanten Prompts (jede Zeile enthält eine `id`) → `get_prompt_details` mit dieser `promptId` für die Antwort-Historie und verfügbaren Tage → `get_answer_content` mit `promptId` + `date` für die exakte KI-Antwort, die genannten Marken und die zitierten Quellen.
+- **Sentiment-Pfad:** `get_sentiment_overview` für Share of Voice, das Sentiment-Leaderboard und die negativsten Aussagen über jede Marke.
+- **Tasks-Pfad:** `list_tasks` für das priorisierte Optimierungs-Backlog (jede Zeile trägt eine `id`) → `get_task_details` mit dieser `taskId` für den vollständigen Maßnahmenplan und die Evidenz dahinter.
+
+### Metrik-Definitionen
+
+Die Tools liefern dieselben Zahlen wie das Finseo Dashboard und benennen sie explizit:
+
+- **`visibilityRatePercent`** — Anteil der analysierten KI-Antworten, in denen deine Marke sichtbar ist: im Antworttext genannt ODER deine eigene Domain als Quelle zitiert (der „Visibility"-KPI im Dashboard)
+- **`mentionRatePercent`** — Anteil der Antworten, die deine Marke im Text nennen (der „Mention Rate"-KPI im Dashboard)
+- **`citationRatePercent`** — Anteil der Antworten, die deine eigene Domain oder einen Domain-Alias als Quelle zitieren (der „Citation Rate"-KPI im Dashboard)
+- **`promptCoveragePercent`** — Anteil der getrackten Prompts mit mindestens einer sichtbaren Antwort (eine andere, meist höhere Zahl)
+- **`brandMentions`** / **`ownDomainCitedAnswers`** — die absoluten Zahlen hinter Mention Rate und Citation Rate
+- **`ownDomainCitations.total`** — KI-Antworten, die deine eigene Domain als Quelle zitieren (der „Citations"-KPI im Dashboard)
+- **`visibilityIsMentionOnly`** (Wettbewerber-Ranking) — `true`, wenn der Citation-Anteil für diese Marke nicht ermittelt werden konnte und `visibilityRatePercent` der rein mention-basierten Rate entspricht

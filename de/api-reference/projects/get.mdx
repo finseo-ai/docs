@@ -5,6 +5,8 @@ api: GET /v1/projects/{projectId}
 
 Ruft ein einzelnes Projekt per ID ab, inklusive der Einstellungen für das KI-Sichtbarkeits-Tracking.
 
+`tracking` sagt, ob das Projekt schon Daten hat: `ready` ist `true`, sobald jeder aktive Prompt mindestens eine KI-Antwort hat. Frag das nach dem Anlegen eines (Pitch-)Projekts und dem Hinzufügen der Prompts ab, bevor du Ergebnisse liest oder [einen Report erstellst](/de/api-reference/reports/create).
+
 <ParamField path="projectId" type="string" required>
   Projekt-ID im MongoDB-Stil.
 </ParamField>
@@ -51,7 +53,15 @@ print(r.json()["data"])
       "defaultLanguage": "en"
     },
     "createdAt": "2025-11-12T10:15:00.000Z",
-    "updatedAt": "2026-03-28T14:22:00.000Z"
+    "updatedAt": "2026-03-28T14:22:00.000Z",
+    "tracking": {
+      "ready": true,
+      "activePrompts": 25,
+      "promptsWithAnswers": 25,
+      "answers": 75,
+      "firstAnswerAt": "2026-11-24T10:57:25.072Z",
+      "lastAnswerAt": "2026-11-24T10:58:44.745Z"
+    }
   }
 }
 ```

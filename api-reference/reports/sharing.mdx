@@ -1,0 +1,34 @@
+---
+title: Change Report Sharing
+api: PATCH /v1/projects/{projectId}/reports/{reportId}
+---
+
+Change who can open a report — the same settings as the **Share** dialog in the Report Builder.
+
+<ParamField path="projectId" type="string" required>
+  Project identifier.
+</ParamField>
+
+<ParamField path="reportId" type="string" required>
+  Report id from [List Reports](/api-reference/reports/list).
+</ParamField>
+
+<ParamField body="share" type="string" required>
+  `link`, `invite` or `private` (unpublish).
+</ParamField>
+
+<ParamField body="invite" type="array">
+  With `invite`: emails or `@company.com` domains to add (free-mail domains cannot be invited as a whole).
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request PATCH \
+  --url https://api.finseo.ai/v1/projects/67a1c2d3e4f5061728394a5b/reports/32f6955c-f4f2-42ec-a7bf-d602152a80c3 \
+  --header "Authorization: Bearer $FINSEO_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{ "share": "invite", "invite": ["@prospect.example"] }'
+```
+
+</RequestExample>

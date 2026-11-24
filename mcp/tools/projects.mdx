@@ -1,0 +1,17 @@
+---
+title: "Project and pitch tools"
+sidebarTitle: "Projects & pitches"
+icon: "folder-open"
+description: List projects, check whether a project has data yet, and run pitch projects for prospects.
+---
+
+| Tool | Access | Description |
+|------|--------|-------------|
+| `list_projects` | read | All your projects with `language`, `isPitch` and `models`. Always the first call — every other tool needs a `projectId` |
+| `get_project_status` | read | Whether a project has data yet: active prompts, prompts with at least one AI answer, answers, first/last answer time and `ready` (every active prompt answered) |
+| `create_pitch_project` | write | Agencies: create a pitch project for a prospect (1, 7 or 14 days, up to 50 prompts, takes a pitch slot) |
+| `convert_pitch_project` | write | Agencies: turn a won pitch into a client project. It keeps its data and counts as a client project |
+
+### Pitch flow
+
+`create_pitch_project` → `add_prompts` → poll `get_project_status` until `ready` → `create_report_from_template` → send the returned link. The same flow works over the REST API — see [Automate a pitch](/api-reference/guides/automate-pitch).

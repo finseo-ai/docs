@@ -1,0 +1,16 @@
+---
+title: "Competitor tools"
+sidebarTitle: "Competitors"
+icon: "users"
+description: Rank competitors, find where they appear and you do not, and compare head-to-head.
+---
+
+All tools on this page are **read-only**.
+
+| Tool | Description |
+|------|-------------|
+| `get_competitor_ranking` | Competitor ranking with the full dashboard KPI set: visibility (named OR cited), mention rate, citation rate, mentions, Share of Voice, ordinal position (`avgMentionOrder`), mention depth, #1/Top-3 share, head-to-head and citations — returns the competitor `id` used by the drill-down tools |
+| `get_competitor_gap_analysis` | Gap analysis vs one competitor: answers where only they appear (your losses), head-to-head, and your wins — with the concrete prompts behind them |
+| `get_competitor_h2h` | Head-to-head vs one competitor: who is named first, average mention order, and LLM-judged comparative claims |
+
+Typical flow: `get_competitor_ranking` → pick a competitor `id` → `get_competitor_gap_analysis` or `get_competitor_h2h`. All three accept `timeframeDays` or `startDate`/`endDate`, `model` and `tags`; the ranking also accepts `entityLevel` (see [Analytics](/mcp/tools/analytics#entity-levels)).

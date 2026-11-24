@@ -1,0 +1,80 @@
+---
+title: Create Report From Template
+api: POST /v1/projects/{projectId}/reports
+---
+
+Creates a report from a saved template and, unless `share` is `private`, publishes it. The response carries the share link — it always shows the project's current data.
+
+Templates adapt to the project: tags in a template are placeholders (*Top tag 1, 2 …* = the project's tags with the most prompts), and slides that cannot be shown for this project (a missing tag, an AI model the project does not track) are left out instead of showing other data. `tagMapping` and `droppedPages` say what happened.
+
+Check that the project has data first: [Get Project](/api-reference/projects/get) → `tracking.ready`.
+
+<ParamField path="projectId" type="string" required>
+  Project identifier.
+</ParamField>
+
+<ParamField body="templateId" type="string" required>
+  Template id from [List Report Templates](/api-reference/reports/templates).
+</ParamField>
+
+<ParamField body="title" type="string" required>
+  Report title (1–200 characters).
+</ParamField>
+
+<ParamField body="clientName" type="string">
+  Client name shown in the deck.
+</ParamField>
+
+<ParamField body="language" type="string">
+  `en`, `de`, `fr`, `es`, `it` or `ko` — dates and period labels.
+</ParamField>
+
+<ParamField body="share" type="string" default="link">
+  `link` — anyone with the link. `invite` — only the emails / `@company.com` domains in `invite` (they confirm with a code sent by email). `private` — not published.
+</ParamField>
+
+<ParamField body="invite" type="array">
+  With `share: "invite"`: up to 50 emails or domains. Invited emails get an email from Finseo.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.finseo.ai/v1/projects/67a1c2d3e4f5061728394a5b/reports \
+  --header "Authorization: Bearer $FINSEO_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "templateId": "2e48af74-0a5b-4d1a-b04c-4d1d7a65b6bc",
+    "title": "AI visibility – Prospect GmbH",
+    "clientName": "Prospect GmbH",
+    "language": "de",
+    "share": "link"
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": {
+    "reportId": "32f6955c-f4f2-42ec-a7bf-d602152a80c3",
+    "title": "AI visibility – Prospect GmbH",
+    "share": "link",
+    "url": "https://app.finseo.ai/p/32f6955c-f4f2-42ec-a7bf-d602152a80c3",
+    "editUrl": "https://app.finseo.ai/reports/32f6955c-f4f2-42ec-a7bf-d602152a80c3",
+    "printUrl": "https://app.finseo.ai/p/32f6955c-f4f2-42ec-a7bf-d602152a80c3?print=true",
+    "tagMapping": [
+      { "from": "Top-Tag 1", "to": "Kredite", "how": "rank" },
+      { "from": "Top-Tag 2", "to": "Konto", "how": "rank" }
+    ],
+    "droppedPages": [
+      { "page": 6, "reason": "the project has no 3. tag" }
+    ]
+  }
+}
+```
+
+</ResponseExample>

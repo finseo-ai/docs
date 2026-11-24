@@ -1,0 +1,32 @@
+---
+title: List Reports
+api: GET /v1/projects/{projectId}/reports
+---
+
+A project's reports, newest first. Published reports carry their share link (`url`).
+
+<ParamField path="projectId" type="string" required>
+  Project identifier.
+</ParamField>
+
+<ResponseExample>
+
+```json 200
+{
+  "data": [
+    {
+      "id": "32f6955c-f4f2-42ec-a7bf-d602152a80c3",
+      "title": "AI visibility – Prospect GmbH",
+      "clientName": "Prospect GmbH",
+      "pages": 11,
+      "published": true,
+      "publishedAt": "2026-11-24T11:17:39.599Z",
+      "url": "https://app.finseo.ai/p/32f6955c-f4f2-42ec-a7bf-d602152a80c3",
+      "editUrl": "https://app.finseo.ai/reports/32f6955c-f4f2-42ec-a7bf-d602152a80c3",
+      "printUrl": "https://app.finseo.ai/p/32f6955c-f4f2-42ec-a7bf-d602152a80c3?print=true"
+    }
+  ]
+}
+```
+
+</ResponseExample>
